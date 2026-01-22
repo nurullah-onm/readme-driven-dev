@@ -1,80 +1,80 @@
 # readme-driven-dev
 
-CLI araci. README kontrati ile kod envanterini karsilastirir.
+CLI tool. Compares the README contract with the code inventory.
 
 ## About
-readme-driven-dev README kontrati ile kod envanteri arasindaki uyumu otomatik olarak denetleyen bir CLI aracidir.
-Kontrat, README icindeki `rdd-contract`, `rdd-tree` ve `rdd-output` bloklaridir.
+readme-driven-dev is a CLI tool that automatically checks alignment between the README contract and the code inventory.
+The contract is the `rdd-contract`, `rdd-tree`, and `rdd-output` blocks in the README.
 
 ![CLI Screenshot](pic.png)
 
-## 1. Problem Tanimi
-- README, komutlari, flag'leri, environment variable'lari, config dosyalarini ve klasor yapisini tarif eder. Kod degisince README guncellenmez. Sonuc: dokumantasyon ile kod arasinda uyumsuzluk.
-- Mevcut yaklasimlar README formatini kontrol eder veya test calistirir. README icindeki teknik sozlesmeyi kod envanteri ile birebir karsilastirmaz.
+## 1. Problem Statement
+- README defines commands, flags, environment variables, config files, and folder structure. When code changes, README is not updated. Result: documentation and code drift.
+- Existing approaches validate README format or run tests. They do not compare the technical contract in README with the code inventory.
 
-## 2. Cozum Yaklasimi
+## 2. Solution Approach
 
-### Ne yapiyor
-- README.md icindeki `rdd-contract` blokunu parse eder.
-- README.md icindeki `rdd-tree` blokunu parse eder.
-- README kontrati ile `.rdd/code.json` kod envanterini karsilastirir.
-- `rdd-tree` icindeki her yolu dosya sisteminde arar.
-- README'deki output orneklerini `docs/examples/` altindaki dosyalar ile karsilastirir.
-- Sonucu `text` veya `json` formatinda uretir.
+### What it does
+- Parses the `rdd-contract` block in README.md.
+- Parses the `rdd-tree` block in README.md.
+- Compares the README contract with the `.rdd/code.json` code inventory.
+- Checks every path in `rdd-tree` on disk.
+- Compares README output examples with files under `docs/examples/`.
+- Produces output in `text` or `json` format.
 
-### Ne yapmiyor
-- Kaynak kodu parse etmez.
-- Komutlari calistirip calisma zamani davranisini olcmez.
-- README disinda dokumantasyon uretmez.
-- Otomatik kod degisikligi yapmaz.
+### What it does not do
+- Does not parse source code.
+- Does not execute commands to measure runtime behavior.
+- Does not generate documentation outside README.
+- Does not apply automatic code changes.
 
-## 3. Kurulum
+## 3. Installation
 
-### Desteklenen isletim sistemleri
+### Supported operating systems
 - macOS 13
 - macOS 14
 - Ubuntu 22.04 LTS
 - Windows 11
 
-### Gereksinimler
+### Requirements
 - Node.js 20.x
 - npm 10.x
 
-### Kurulum komutlari
-Komutlar proje kok dizininde calisir.
+### Installation commands
+Commands run from the project root directory.
 
 ```bash
 npm install
 npm install -g .
 ```
 
-## 4. Kullanim
+## 4. Usage
 
-### Komut sozdizimi
+### Command syntax
 ```bash
-rdd <komut> [flag]
+rdd <command> [flag]
 ```
 
-### Komutlar
-- `verify`: README kontrati ile kod envanterini karsilastirir.
-- `parse`: README kontratini JSON olarak stdout'a yazar.
+### Commands
+- `verify`: compares the README contract with the code inventory.
+- `parse`: writes the README contract to stdout as JSON.
 
-### Global flag'ler
-- `-h, --help`: yardim metnini yazar ve cikar.
-- `--version`: surum numarasini yazar ve cikar.
+### Global flags
+- `-h, --help`: prints help and exits.
+- `--version`: prints the version and exits.
 
-### verify flag'leri
-- `--root <path>`: repository root. Varsayilan deger: `.`
-- `--readme <path>`: README yolu. Varsayilan deger: `README.md`
-- `--format <text|json>`: cikti formati. Varsayilan deger: `text`
+### verify flags
+- `--root <path>`: repository root. Default value: `.`
+- `--readme <path>`: README path. Default value: `README.md`
+- `--format <text|json>`: output format. Default value: `text`
 
-### parse flag'leri
-- `--root <path>`: repository root. Varsayilan deger: `.`
-- `--readme <path>`: README yolu. Varsayilan deger: `README.md`
+### parse flags
+- `--root <path>`: repository root. Default value: `.`
+- `--readme <path>`: README path. Default value: `README.md`
 
-### Ornekler
+### Examples
 
-#### Ornek: verify basarili
+#### Example: verify success
 ```bash
 rdd verify --root . --readme README.md
 ```
@@ -87,7 +87,7 @@ README: README.md
 ERRORS: 0
 ```
 
-#### Ornek: verify hatali
+#### Example: verify failure
 ```bash
 rdd verify --root . --readme README.md
 ```
@@ -102,7 +102,7 @@ ERRORS: 2
 - CONTRACT_MISMATCH commands.verify.flags
 ```
 
-#### Ornek: parse
+#### Example: parse
 ```bash
 rdd parse --root . --readme README.md
 ```
@@ -126,21 +126,21 @@ Output ID: parse-output
 }
 ```
 
-## 5. README <-> Code Kurallari
+## 5. README <-> Code Rules
 
-### README'den parse edilenler
-- `rdd-contract` kod blogu zorunludur. JSON object olmak zorundadir. Zorunlu alanlar:
+### Parsed from README
+- The `rdd-contract` code block is required. It must be a JSON object. Required fields:
   - `globalFlags`: string array
-  - `commands`: object, her komut icin `flags` string array
+  - `commands`: object, each command has `flags` as string array
   - `env`: string array
-  - `configFiles`: string array, root'a gore yol
-  - `examples`: object, `id` -> root'a gore yol
-- `rdd-tree` kod blogu zorunludur. Agac formati ASCII olmalidir ve `|--` ile `\--` kullanir.
-- `rdd-output` kod bloglari `Output ID: <id>` satirindan sonra gelir. `<id>` degeri `examples` icinde olmak zorundadir.
+  - `configFiles`: string array, root-relative path
+  - `examples`: object, `id` -> root-relative path
+- The `rdd-tree` code block is required. Tree format is ASCII and uses `|--` and `\--`.
+- `rdd-output` code blocks appear after the `Output ID: <id>` line. `<id>` must exist in `examples`.
 
-`rdd parse` sadece `rdd-contract` JSON verisini yazar. JSON 2 space girinti ile ve sonda tek satir sonu ile yazilir.
+`rdd parse` outputs only the `rdd-contract` JSON data. JSON is written with 2-space indentation and a trailing newline.
 
-Bu README icindeki `rdd-contract` blogu:
+The `rdd-contract` block in this README:
 ```rdd-contract
 {
   "globalFlags": ["-h", "--help", "--version"],
@@ -159,20 +159,20 @@ Bu README icindeki `rdd-contract` blogu:
 }
 ```
 
-### Koddan dogrulananlar
-- `.rdd/code.json` dosyasi zorunludur ve JSON object olmak zorundadir.
-- `.rdd/code.json` alanlari:
+### Validated from code
+- `.rdd/code.json` is required and must be a JSON object.
+- `.rdd/code.json` fields:
   - `globalFlags`
   - `commands`
   - `env`
   - `configFiles`
-- `globalFlags`, `commands`, `env`, `configFiles` degerleri README kontrati ile birebir ayni olmak zorundadir.
-- `configFiles` icindeki her yol dosya sisteminde bulunmak zorundadir.
-- `rdd-tree` icindeki her yol dosya sisteminde bulunmak zorundadir.
-- `examples` icindeki her yol dosya sisteminde bulunmak zorundadir.
-- README'deki her `rdd-output` blogu, `examples` icindeki ilgili dosya icerigi ile birebir ayni olmak zorundadir.
+- `globalFlags`, `commands`, `env`, `configFiles` must exactly match the README contract.
+- Every path in `configFiles` must exist on disk.
+- Every path in `rdd-tree` must exist on disk.
+- Every path in `examples` must exist on disk.
+- Every `rdd-output` block in README must exactly match the content of the corresponding example file.
 
-`.rdd/code.json` formati:
+`.rdd/code.json` format:
 ```json
 {
   "globalFlags": ["-h", "--help", "--version"],
@@ -185,8 +185,8 @@ Bu README icindeki `rdd-contract` blogu:
 }
 ```
 
-### Hata durumlari ve exit code'lar
-Verify hata kodlari:
+### Error cases and exit codes
+Verify error codes:
 - `README_CONTRACT_MISSING`
 - `README_CONTRACT_INVALID_JSON`
 - `README_TREE_MISSING`
@@ -197,20 +197,20 @@ Verify hata kodlari:
 - `OUTPUT_MISSING`
 - `OUTPUT_MISMATCH`
 
-`rdd verify` exit code:
-- `0`: tum kontroller basarili
-- `1`: en az bir dogrulama hatasi
-- `2`: README kontrati veya code envanteri gecersiz
-- `3`: ic hata
+`rdd verify` exit codes:
+- `0`: all checks passed
+- `1`: at least one validation error
+- `2`: README contract or code inventory invalid
+- `3`: internal error
 
-`rdd parse` exit code:
-- `0`: parse basarili
-- `2`: README kontrati eksik veya gecersiz JSON
-- `3`: ic hata
+`rdd parse` exit codes:
+- `0`: parse successful
+- `2`: README contract missing or invalid JSON
+- `3`: internal error
 
-## 6. Proje Mimarisi
+## 6. Project Architecture
 
-### Klasor yapisi
+### Folder structure
 ```rdd-tree
 readme-driven-dev/
 |-- README.md
@@ -242,29 +242,29 @@ readme-driven-dev/
         \-- verify-success.txt
 ```
 
-### Ana moduller ve sorumluluklari
-- `bin/rdd`: CLI giris noktasi ve komut yonlendirme.
-- `src/cli.js`: arguman parsing ve komut cagirma.
-- `src/contract/parse.js`: README kontratini parse eder.
-- `src/contract/validate.js`: kontrat alanlarini dogrular.
-- `src/code/load.js`: `.rdd/code.json` dosyasini okur.
-- `src/code/compare.js`: README kontrati ile kod envanterini karsilastirir.
-- `src/report/format-text.js`: text formatinda rapor uretir.
-- `src/report/format-json.js`: JSON formatinda rapor uretir.
-- `src/errors.js`: hata kodlari ve mesaj sablonlari.
+### Modules and responsibilities
+- `bin/rdd`: CLI entry point and command dispatch.
+- `src/cli.js`: argument parsing and command invocation.
+- `src/contract/parse.js`: parses the README contract.
+- `src/contract/validate.js`: validates contract fields.
+- `src/code/load.js`: reads `.rdd/code.json`.
+- `src/code/compare.js`: compares README contract with code inventory.
+- `src/report/format-text.js`: produces text output.
+- `src/report/format-json.js`: produces JSON output.
+- `src/errors.js`: error codes and message templates.
 
 ## 7. CI / Automation
-CI adiminda su komut calisir:
+The following command runs in CI:
 
 ```bash
 rdd verify --root . --readme README.md --format json
 ```
 
-JSON output formati:
-- `status`: `ok` veya `fail`
+JSON output format:
+- `status`: `ok` or `fail`
 - `root`: string
 - `readme`: string
-- `errors`: object array, her eleman `code` ve `detail` alanlarini icerir
+- `errors`: object array, each element has `code` and `detail`
 
 Output ID: verify-json
 ```rdd-output
@@ -279,6 +279,6 @@ Output ID: verify-json
 ```
 
 ## 8. Roadmap
-- v1: README kontrat parse, code.json karsilastirma, tree ve output dogrulama, text ve JSON rapor.
-- v1.1: JSON raporunda deterministik alan sirasi ve hata listesinin stabil sirasi.
-- v2: Kaynak koddan Node.js ve Go icin komut ve flag cikarma.
+- v1: README contract parsing, code.json comparison, tree and output validation, text and JSON reports.
+- v1.1: deterministic JSON field order and stable error ordering.
+- v2: extract commands and flags from source code for Node.js and Go.
