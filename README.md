@@ -214,6 +214,7 @@ Verify hata kodlari:
 ```rdd-tree
 readme-driven-dev/
 |-- README.md
+|-- LICENSE
 |-- pic.png
 |-- package.json
 |-- package-lock.json
