@@ -2,6 +2,12 @@
 
 CLI araci. README kontrati ile kod envanterini karsilastirir.
 
+## About
+readme-driven-dev README kontrati ile kod envanteri arasindaki uyumu otomatik olarak denetleyen bir CLI aracidir.
+Kontrat, README icindeki `rdd-contract`, `rdd-tree` ve `rdd-output` bloklaridir.
+
+![CLI Screenshot](pic.png)
+
 ## 1. Problem Tanimi
 - README, komutlari, flag'leri, environment variable'lari, config dosyalarini ve klasor yapisini tarif eder. Kod degisince README guncellenmez. Sonuc: dokumantasyon ile kod arasinda uyumsuzluk.
 - Mevcut yaklasimlar README formatini kontrol eder veya test calistirir. README icindeki teknik sozlesmeyi kod envanteri ile birebir karsilastirmaz.
@@ -208,6 +214,7 @@ Verify hata kodlari:
 ```rdd-tree
 readme-driven-dev/
 |-- README.md
+|-- pic.png
 |-- package.json
 |-- package-lock.json
 |-- bin/
