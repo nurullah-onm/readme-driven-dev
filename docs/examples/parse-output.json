@@ -1,0 +1,15 @@
+{
+  "globalFlags": ["-h", "--help", "--version"],
+  "commands": {
+    "verify": { "flags": ["--root", "--readme", "--format"] },
+    "parse": { "flags": ["--root", "--readme"] }
+  },
+  "env": [],
+  "configFiles": [".rdd/code.json"],
+  "examples": {
+    "verify-success": "docs/examples/verify-success.txt",
+    "verify-failure": "docs/examples/verify-failure.txt",
+    "parse-output": "docs/examples/parse-output.json",
+    "verify-json": "docs/examples/verify-json.json"
+  }
+}

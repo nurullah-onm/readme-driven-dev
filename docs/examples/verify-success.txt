@@ -1,0 +1,4 @@
+STATUS: ok
+ROOT: .
+README: README.md
+ERRORS: 0

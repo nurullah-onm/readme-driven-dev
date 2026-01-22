@@ -1,0 +1,9 @@
+{
+  "globalFlags": ["-h", "--help", "--version"],
+  "commands": {
+    "verify": { "flags": ["--root", "--readme", "--format"] },
+    "parse": { "flags": ["--root", "--readme"] }
+  },
+  "env": [],
+  "configFiles": [".rdd/code.json"]
+}

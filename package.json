@@ -1,0 +1,7 @@
+{
+  "name": "readme-driven-dev",
+  "version": "0.1.0",
+  "bin": {
+    "rdd": "bin/rdd"
+  }
+}

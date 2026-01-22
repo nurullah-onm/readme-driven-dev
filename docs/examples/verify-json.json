@@ -1,0 +1,8 @@
+{
+  "status": "fail",
+  "root": ".",
+  "readme": "README.md",
+  "errors": [
+    { "code": "MISSING_PATH", "detail": "docs/examples/verify-failure.txt" }
+  ]
+}

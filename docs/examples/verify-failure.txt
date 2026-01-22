@@ -1,0 +1,6 @@
+STATUS: fail
+ROOT: .
+README: README.md
+ERRORS: 2
+- MISSING_PATH docs/examples/verify-failure.txt
+- CONTRACT_MISMATCH commands.verify.flags
